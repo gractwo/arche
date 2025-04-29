@@ -17,7 +17,11 @@ impl EventHandler for Handler {
     async fn ready(&self, ctx: Context, ready: Ready) {
         info!("{} is connected!", ready.user.name);
 
-        let cmds = vec![commands::ping::register(), commands::kiss::register()];
+        let cmds = vec![
+            commands::ping::register(),
+            commands::kiss::register(),
+            commands::perish::register(),
+        ];
 
         let guild_id = serenity::model::id::GuildId::from(
             std::env::var(GUILD_ID).unwrap().parse::<u64>().unwrap(),
@@ -30,19 +34,19 @@ impl EventHandler for Handler {
     }
 
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {
-        if let Interaction::Command(command) = interaction {
-            let result = match command.data.name.as_str() {
-                "ping" => commands::ping::run(&ctx, &command).await,
-                "kiss" => commands::kiss::run(&ctx, &command).await,
+        if let Interaction::Command(cmd) = interaction {
+            let result = match cmd.data.name.as_str() {
+                "ping" => commands::ping::run(&ctx, &cmd).await,
+                "kiss" => commands::kiss::run(&ctx, &cmd).await,
+                "perish" => commands::perish::run(&ctx, &cmd).await,
                 _ => {
-                    command
-                        .create_response(
-                            &ctx.http,
-                            CreateInteractionResponse::Message(
-                                CreateInteractionResponseMessage::new().content("Not implemented"),
-                            ),
-                        )
-                        .await
+                    cmd.create_response(
+                        &ctx.http,
+                        CreateInteractionResponse::Message(
+                            CreateInteractionResponseMessage::new().content("Not implemented"),
+                        ),
+                    )
+                    .await
                 }
             };
 
