@@ -5,9 +5,8 @@ use serenity::{
 };
 use tracing::info;
 
-const TOKEN_ENV: &str = "DISCORD_GRA_MAIN_TOKEN";
-const GUILD_ID1: &str = "DISCORD_MAIN_SERVER_ID";
-const GUILD_ID2: &str = "DISCORD_RD_SERVER_ID";
+const TOKEN_ENV: &str = "DISCORD_BOT_TOKEN";
+const GUILD_ID: &str = "DISCORD_SERVER_ID";
 
 struct Handler;
 
@@ -20,20 +19,13 @@ impl EventHandler for Handler {
 
         let cmds = vec![commands::ping::register(), commands::kiss::register()];
 
-        let main_guild_id = serenity::model::id::GuildId::from(
-            std::env::var(GUILD_ID1).unwrap().parse::<u64>().unwrap(),
-        );
-        let dev_guild_id = serenity::model::id::GuildId::from(
-            std::env::var(GUILD_ID2).unwrap().parse::<u64>().unwrap(),
+        let guild_id = serenity::model::id::GuildId::from(
+            std::env::var(GUILD_ID).unwrap().parse::<u64>().unwrap(),
         );
 
-        match main_guild_id.set_commands(&ctx.http, cmds.clone()).await {
-            Ok(_) => info!("Successfully registered commands on main guild.",),
-            Err(why) => info!("Failed to register commands on main guild: {why:?}"),
-        };
-        match dev_guild_id.set_commands(&ctx.http, cmds.clone()).await {
-            Ok(_) => info!("Successfully registered commands on dev guild."),
-            Err(why) => info!("Failed to register commands on dev guild: {why:?}"),
+        match guild_id.set_commands(&ctx.http, cmds.clone()).await {
+            Ok(_) => info!("Successfully registered commands on the guild.",),
+            Err(why) => info!("Failed to register commands on the guild: {why:?}"),
         };
     }
 
@@ -69,9 +61,7 @@ pub async fn init() {
 
 async fn init_bot() {
     let token = std::env::var(TOKEN_ENV).unwrap();
-    let intents = GatewayIntents::GUILD_MESSAGES
-        | GatewayIntents::DIRECT_MESSAGES
-        | GatewayIntents::MESSAGE_CONTENT;
+    let intents = GatewayIntents::non_privileged();
 
     let mut client = Client::builder(&token, intents)
         .event_handler(Handler)
