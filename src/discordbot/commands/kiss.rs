@@ -26,29 +26,17 @@ pub async fn run(ctx: &Context, interaction: &CommandInteraction) -> Result<(), 
 
     let target_user = options
         .iter()
-        .find_map(|opt| {
-            if opt.name == "target" {
-                match &opt.value {
-                    ResolvedValue::User(user, member) => Some((user, member.as_ref())),
-                    _ => None,
-                }
-            } else {
-                None
-            }
+        .find_map(|opt| match (opt.name, &opt.value) {
+            ("target", ResolvedValue::User(user, member)) => Some((user, member.as_ref())),
+            _ => None,
         })
-        .expect("Target user should be present");
+        .expect("Target user is a required field; should be present");
 
     let use_bigger = options
         .iter()
-        .find_map(|opt| {
-            if opt.name == "bigger" {
-                match &opt.value {
-                    ResolvedValue::Boolean(v) => Some(*v),
-                    _ => None,
-                }
-            } else {
-                None
-            }
+        .find_map(|opt| match (opt.name, &opt.value) {
+            ("target", ResolvedValue::Boolean(v)) => Some(*v),
+            _ => None,
         })
         .unwrap_or(false);
 
