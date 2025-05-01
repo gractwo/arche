@@ -11,7 +11,7 @@ const GUILD_ID: &str = "DISCORD_SERVER_ID";
 struct Handler;
 
 mod commands;
-mod guild_icon;
+mod events;
 
 #[async_trait]
 impl EventHandler for Handler {
@@ -33,7 +33,7 @@ impl EventHandler for Handler {
             Err(why) => info!("Failed to register commands on the guild: {why:?}"),
         };
 
-        guild_icon::init_service(&ctx, &guild_id);
+        events::init_service(&ctx, &guild_id);
     }
 
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {

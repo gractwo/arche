@@ -1,3 +1,4 @@
+use super::events;
 use chrono::{Datelike, Duration, Local, TimeZone, Utc};
 use chrono_tz::Europe::Warsaw;
 use serenity::all::{Context, CreateAttachment, EditGuild, Guild, GuildId};
@@ -6,7 +7,7 @@ use tracing::{error, info, warn};
 
 const MAIN_GUILD_ID: GuildId = GuildId::new(447075692664979466);
 
-enum Event {
+pub enum Event {
     Normal,
     PolskaGórą,
     PrideMonth,
@@ -22,7 +23,7 @@ enum Event {
 }
 
 impl Event {
-    fn icon(&self) -> &str {
+    pub fn icon(&self) -> &str {
         use Event as E;
         match self {
             E::PolskaGórą => "./assets/logo-x512-polish.png",
@@ -31,9 +32,28 @@ impl Event {
             _ => "./assets/logo-x512.png",
         }
     }
+    pub fn guild_name(&self) -> String {
+        use Event as E;
+        match self {
+            E::PolskaGórą => "Gractwo 🇵🇱".into(),
+            E::PrideMonth => "Gractwo 🏳️‍🌈".into(),
+            E::ValentineDay => "Gractwo 💗".into(),
+            E::Rogaliki => "Rogalictwo 🥐".into(),
+            E::Halloween => "Spooky Gractwo 🎃".into(),
+            E::Christmas => "Jolly Gractwo 🎄🎁☃️".into(),
+            E::NewYears => "New Gractwo, New Me 🎉".into(),
+            E::AnniversaryTF2 => "Polscy Gracze Team Fortress".into(),
+            E::AnniversaryGractwo => {
+                // TODO: this will conjugate badly in 17 years
+                let xlecie = Utc::now().year_ce().1 - 2020;
+                format!("{xlecie} lat Gractwa!")
+            }
+            _ => "Gractwo".into(),
+        }
+    }
 }
 
-fn get_current_event() -> Event {
+pub fn get_current_event() -> Event {
     let today = Local::now();
     let (month, day) = (today.month(), today.day());
 
@@ -58,26 +78,26 @@ fn get_current_event() -> Event {
 
 pub fn init_service(ctx: &Context, guild_id: &GuildId) {
     let (ctx, guild_id) = (ctx.clone(), guild_id.clone());
-    info!("Initialising guild name/icon automation service...");
+    info!("Initialising event automation service...");
 
     if guild_id != MAIN_GUILD_ID {
-        info!("Guild name/icon automation service not initialised; Bot not running on main guild.");
+        info!("Guild event automation service not initialised; Bot not running on main guild.");
         return;
     }
 
     tokio::spawn(async move {
-        run_icon_service(ctx, guild_id).await;
+        run_event_service(ctx, guild_id).await;
     });
 }
 
-pub async fn run_icon_service(ctx: Context, guild_id: GuildId) {
+pub async fn run_event_service(ctx: Context, guild_id: GuildId) {
     loop {
-        update_icon(&ctx, guild_id).await.ok();
+        update_guild(&ctx, guild_id).await.ok();
         sleep_until_next_midnight().await;
     }
 }
 
-async fn update_icon(ctx: &Context, guild_id: GuildId) -> Result<(), String> {
+async fn update_guild(ctx: &Context, guild_id: GuildId) -> Result<(), String> {
     let mut guild = match Guild::get(&ctx.http, guild_id).await {
         Ok(g) => g,
         Err(e) => {
@@ -85,7 +105,7 @@ async fn update_icon(ctx: &Context, guild_id: GuildId) -> Result<(), String> {
             return Err("Could not get guild info: {e}".to_string());
         }
     };
-    let event = get_current_event();
+    let event = events::get_current_event();
 
     let icon = match CreateAttachment::path(event.icon()).await {
         Ok(i) => i,
@@ -94,14 +114,18 @@ async fn update_icon(ctx: &Context, guild_id: GuildId) -> Result<(), String> {
             return Err("Could not create icon attachment: {e}".to_string());
         }
     };
+
     match guild
-        .edit(&ctx.http, EditGuild::new().icon(Some(&icon)))
+        .edit(
+            &ctx.http,
+            EditGuild::new().name(event.guild_name()).icon(Some(&icon)),
+        )
         .await
     {
-        Ok(_) => info!("Guild icon updated."),
+        Ok(_) => info!("Guild name/icon updated."),
         Err(e) => {
-            error!("Could not update guild icon...");
-            return Err("Could not update guild icon: {e}".to_string());
+            error!("Could not update guild name/icon...");
+            return Err("Could not update guild name/icon: {e}".to_string());
         }
     };
 
