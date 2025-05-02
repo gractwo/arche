@@ -22,6 +22,7 @@ impl EventHandler for Handler {
             commands::ping::register(),
             commands::kiss::register(),
             commands::perish::register(),
+            commands::embed::register(),
         ];
 
         let guild_id = serenity::model::id::GuildId::from(
@@ -42,6 +43,7 @@ impl EventHandler for Handler {
                 "ping" => commands::ping::run(&ctx, &cmd).await,
                 "kiss" => commands::kiss::run(&ctx, &cmd).await,
                 "perish" => commands::perish::run(&ctx, &cmd).await,
+                "embed" => commands::embed::run(&ctx, &cmd).await,
                 _ => {
                     cmd.create_response(
                         &ctx.http,
