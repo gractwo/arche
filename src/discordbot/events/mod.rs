@@ -83,7 +83,15 @@ impl Event {
             }
             E::PrideMonth => {
                 let mut rng = rand::rng();
-                const VARIANTS: &[&str] = &["Miesiąc Dumy", "Pride Month", "LGBT Rights!"];
+                const VARIANTS: &[&str] = &[
+                    "Miesiąc Dumy",
+                    "Pride Month",
+                    "LGBT Rights!",
+                    "Rainbows Galore!",
+                    "USB-C LGTV!",
+                    "Unite!",
+                    "Proud!",
+                ];
                 format!("Gractwo: {}", VARIANTS.choose(&mut rng).unwrap())
             }
             E::ValentineDay => {
