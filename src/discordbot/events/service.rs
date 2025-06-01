@@ -8,6 +8,9 @@ use super::Event;
 pub async fn run_event_service(ctx: Context, guild_id: GuildId) {
     loop {
         update_guild(&ctx, guild_id).await.ok();
+
+        // make sure temporal boundaries have been cleared
+        tokio::time::sleep(std::time::Duration::from_secs(10)).await;
         sleep_until_next_midnight().await;
     }
 }
