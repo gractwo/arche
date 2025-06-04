@@ -27,6 +27,7 @@ pub enum Event {
     Normal,
     PolskaGórą,
     PrideMonth,
+    RandomQueerEvent,
     ValentineDay,
     Rogaliki,
     Halloween,
@@ -56,14 +57,17 @@ impl Event {
             (11, 11) => Event::Rogaliki,
             (24..=30, 12) => Event::Christmas,
             (31, 12) => Event::NewYears,
-            _ => Event::Normal,
+            _ => match rand::random_bool(1.0 / 24.0) {
+                true => Event::RandomQueerEvent,
+                false => Event::Normal,
+            },
         }
     }
     pub fn icon(&self) -> &str {
         use Event as E;
         match self {
             E::PolskaGórą => "./assets/logo-x512-polish.png",
-            E::PrideMonth => "./assets/logo-x512-lgbtflag.png",
+            E::PrideMonth | E::RandomQueerEvent => "./assets/logo-x512-lgbtflag.png",
             E::StarWarsDay => "./assets/logo-x512-starwars.png",
             _ => "./assets/logo-x512.png",
         }
@@ -94,6 +98,7 @@ impl Event {
                 ];
                 format!("Gractwo: {}", VARIANTS.choose(&mut rng).unwrap())
             }
+            E::RandomQueerEvent => "Gractwo: Random Queer Event".to_string(),
             E::ValentineDay => {
                 let mut rng = rand::rng();
                 const VARIANTS: &[&str] = &["Gractwo is in love!", "Gractwo Dating Sim"];
