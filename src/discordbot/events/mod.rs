@@ -1,6 +1,6 @@
 use chrono::{Datelike, Utc};
 use chrono_tz::Europe::Warsaw;
-use rand::seq::IndexedRandom;
+use rand::{SeedableRng, seq::IndexedRandom};
 use serenity::all::{Context, GuildId};
 use service::run_event_service;
 use tracing::info;
@@ -86,7 +86,9 @@ impl Event {
                 format!("Gractwo{suffix}")
             }
             E::PrideMonth => {
-                let mut rng = rand::rng();
+                let now = Utc::now().with_timezone(&Warsaw);
+                let seed: u64 = (now.year() as u64) * 1000 + (now.day() as u64);
+                let mut rng = rand::rngs::SmallRng::seed_from_u64(seed);
                 const VARIANTS: &[&str] = &[
                     "Miesiąc Dumy",
                     "Pride Month",
