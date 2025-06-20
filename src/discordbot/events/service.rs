@@ -1,6 +1,6 @@
 use chrono::{Datelike, Duration, TimeZone, Utc};
 use chrono_tz::Europe::Warsaw;
-use serenity::all::{Context, CreateAttachment, EditGuild, EditProfile, Guild, GuildId};
+use serenity::all::{Context, CreateAttachment, EditGuild, EditProfile, GuildId};
 use tracing::{error, info, warn};
 
 use super::Event;
@@ -16,15 +16,7 @@ pub async fn run_event_service(ctx: Context, guild_id: GuildId) {
 }
 
 async fn update_event_constituents(ctx: &Context, guild_id: GuildId) -> Result<(), String> {
-    let mut guild = match Guild::get(&ctx.http, guild_id).await {
-        Ok(g) => g,
-        Err(e) => {
-            error!("Could not get guild info: {e}");
-            return Err("Could not get guild info: {e}".to_string());
-        }
-    };
     let event = Event::get_current();
-
     let icon = match CreateAttachment::path(event.icon()).await {
         Ok(i) => i,
         Err(e) => {
@@ -33,17 +25,19 @@ async fn update_event_constituents(ctx: &Context, guild_id: GuildId) -> Result<(
         }
     };
 
-    match guild
-        .edit(
-            &ctx.http,
-            EditGuild::new().name(event.guild_name()).icon(Some(&icon)),
+    match ctx
+        .http
+        .edit_guild(
+            guild_id,
+            &EditGuild::new().name(&event.guild_name()).icon(Some(&icon)),
+            None,
         )
         .await
     {
-        Ok(_) => info!("Guild name/icon updated."),
+        Ok(_) => info!("Guild updated."),
         Err(e) => {
-            error!("Could not update guild name/icon: {e}");
-            return Err("Could not update guild name/icon: {e}".to_string());
+            error!("Could not update guild: {e}");
+            return Err("Could not update guild: {e}".to_string());
         }
     };
 

@@ -12,6 +12,7 @@ struct Handler;
 
 mod commands;
 mod events;
+mod status;
 
 #[async_trait]
 impl EventHandler for Handler {
@@ -34,6 +35,7 @@ impl EventHandler for Handler {
             Err(why) => info!("Failed to register commands on the guild: {why:?}"),
         };
 
+        status::init_service(&ctx);
         events::init_service(&ctx, &guild_id);
     }
 
