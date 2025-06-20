@@ -91,9 +91,15 @@ impl Event {
                 let mut rng = rand::rngs::SmallRng::seed_from_u64(seed);
                 const VARIANTS: &[&str] = &[
                     "Miesiąc Dumy",
+                    "Wolność!",
+                    "Równość!",
                     "Pride Month",
                     "LGBT Rights!",
                     "Rainbows Galore!",
+                    "Rainbow Barrage!",
+                    "Rainbow Resistance",
+                    "Resist!",
+                    "All Are Welcome",
                     "USB-C LGTV!",
                     "Unite!",
                     "Proud!",
