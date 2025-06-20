@@ -1,13 +1,13 @@
 use chrono::{Datelike, Duration, TimeZone, Utc};
 use chrono_tz::Europe::Warsaw;
-use serenity::all::{Context, CreateAttachment, EditGuild, Guild, GuildId};
+use serenity::all::{Context, CreateAttachment, EditGuild, EditProfile, Guild, GuildId};
 use tracing::{error, info, warn};
 
 use super::Event;
 
 pub async fn run_event_service(ctx: Context, guild_id: GuildId) {
     loop {
-        update_guild(&ctx, guild_id).await.ok();
+        update_event_constituents(&ctx, guild_id).await.ok();
 
         // make sure temporal boundaries have been cleared
         tokio::time::sleep(std::time::Duration::from_secs(10)).await;
@@ -15,7 +15,7 @@ pub async fn run_event_service(ctx: Context, guild_id: GuildId) {
     }
 }
 
-async fn update_guild(ctx: &Context, guild_id: GuildId) -> Result<(), String> {
+async fn update_event_constituents(ctx: &Context, guild_id: GuildId) -> Result<(), String> {
     let mut guild = match Guild::get(&ctx.http, guild_id).await {
         Ok(g) => g,
         Err(e) => {
@@ -44,6 +44,18 @@ async fn update_guild(ctx: &Context, guild_id: GuildId) -> Result<(), String> {
         Err(e) => {
             error!("Could not update guild name/icon: {e}");
             return Err("Could not update guild name/icon: {e}".to_string());
+        }
+    };
+
+    match ctx
+        .http
+        .edit_profile(&EditProfile::new().avatar(&icon))
+        .await
+    {
+        Ok(_) => info!("Bot avatar updated."),
+        Err(e) => {
+            error!("Could not update bot avatar: {e}");
+            return Err("Could not update bot avatar: {e}".to_string());
         }
     };
 
