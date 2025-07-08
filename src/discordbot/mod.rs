@@ -1,5 +1,7 @@
 use serenity::{
-    all::{CreateInteractionResponse, CreateInteractionResponseMessage, Interaction, Ready},
+    all::{
+        CreateInteractionResponse, CreateInteractionResponseMessage, GuildId, Interaction, Ready,
+    },
     async_trait,
     prelude::*,
 };
@@ -12,7 +14,11 @@ struct Handler;
 
 mod commands;
 mod events;
+mod member_count;
 mod status;
+
+const MAIN_GUILD_ID: GuildId = GuildId::new(447075692664979466);
+pub use member_count::get_member_count;
 
 #[async_trait]
 impl EventHandler for Handler {
@@ -37,6 +43,7 @@ impl EventHandler for Handler {
 
         status::init_service(&ctx);
         events::init_service(&ctx, &guild_id);
+        member_count::init_service(&ctx, &guild_id);
     }
 
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {

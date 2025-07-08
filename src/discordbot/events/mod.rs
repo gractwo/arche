@@ -1,3 +1,4 @@
+use crate::discordbot::MAIN_GUILD_ID;
 use chrono::{Datelike, Utc};
 use chrono_tz::Europe::Warsaw;
 use rand::{SeedableRng, seq::IndexedRandom};
@@ -20,8 +21,6 @@ pub fn init_service(ctx: &Context, guild_id: &GuildId) {
         run_event_service(ctx, guild_id).await;
     });
 }
-
-const MAIN_GUILD_ID: GuildId = GuildId::new(447075692664979466);
 
 pub enum Event {
     Normal,
