@@ -1,9 +1,18 @@
 use axum::{Router, http::StatusCode, routing::get};
 use chrono::{NaiveDate, Utc};
 
+use crate::router::redirects::redirects;
+
+mod redirects;
+
 pub fn init() -> Router {
+    Router::new().merge(redirects()).nest("/api/", api())
+}
+
+fn api() -> Router {
     Router::new()
-        .route("/", get(async || "root"))
+        .route("/", get(async || StatusCode::OK))
+        .route("/live", get(async || StatusCode::OK))
         .route("/discord/member-count", get(get_member_count))
         .route("/days/community", get(get_days_since_community_formation))
 }
