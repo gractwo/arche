@@ -4,6 +4,7 @@ use tokio::net::TcpListener;
 mod discordbot;
 mod router;
 mod setup;
+mod website;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {

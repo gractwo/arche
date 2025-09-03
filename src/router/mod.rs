@@ -1,12 +1,16 @@
 use axum::{Router, http::StatusCode, routing::get};
 use chrono::{NaiveDate, Utc};
+use tower::service_fn;
 
-use crate::router::redirects::redirects;
+use crate::{router::redirects::redirects, website::website_service};
 
 mod redirects;
 
 pub fn init() -> Router {
-    Router::new().merge(redirects()).nest("/api/", api())
+    Router::new()
+        .merge(redirects())
+        .nest("/api/", api())
+        .fallback_service(service_fn(website_service))
 }
 
 fn api() -> Router {
