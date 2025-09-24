@@ -2,11 +2,11 @@ use std::convert::Infallible;
 
 use axum::{
     body::Body,
-    http::{Request, StatusCode, header},
+    http::{Request, header},
     response::{IntoResponse, Response},
 };
 
-use crate::website::pages::index::page_index;
+use crate::website::pages::{index::page_index, notfound::page_notfound};
 
 mod pages;
 
@@ -22,6 +22,6 @@ pub async fn website_service(req: Request<Body>) -> Result<Response, Infallible>
         "styles.css" => ([(header::CONTENT_TYPE, "text/css")], STYLES_CSS).into_response(),
         "favicon.svg" => ([(header::CONTENT_TYPE, "image/svg+xml")], FAVICON_SVG).into_response(),
         "favicon-x64.png" => ([(header::CONTENT_TYPE, "image/png")], FAVICON_X64).into_response(),
-        _ => StatusCode::NOT_FOUND.into_response(),
+        _ => page_notfound().await,
     })
 }
