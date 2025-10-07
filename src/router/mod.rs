@@ -19,6 +19,14 @@ fn api() -> Router {
         .route("/live", get(async || StatusCode::OK))
         .route("/discord/member-count", get(get_member_count))
         .route("/days/community", get(get_days_since_community_formation))
+        .fallback(api_fallback)
+}
+
+async fn api_fallback() -> (StatusCode, String) {
+    (
+        StatusCode::NOT_FOUND,
+        "This URL isn't specified by our API. Sorry!".into(),
+    )
 }
 
 async fn get_member_count() -> (StatusCode, String) {
