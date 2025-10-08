@@ -65,9 +65,9 @@ impl Event {
     pub fn icon(&self) -> &str {
         use Event as E;
         match self {
-            E::PolskaGórą => "./assets/logo-x512-polish.png",
-            E::PrideMonth | E::RandomQueerEvent => "./assets/logo-x512-lgbtflag.png",
-            E::StarWarsDay => "./assets/logo-x512-starwars.png",
+            E::PolskaGórą => "./assets/logo-national-x512.png",
+            E::PrideMonth | E::RandomQueerEvent => "./assets/logo-pride-x512.png",
+            E::StarWarsDay => "./assets/logo-theforce-x512.png",
             _ => "./assets/logo-x512.png",
         }
     }
