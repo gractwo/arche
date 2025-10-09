@@ -1,14 +1,21 @@
 {% extends "base.html" %} {# # # # # # # # # # # # # # # # # # # # # # # # # #}
 {% block title %}gractwo.pl | Błąd 404{% endblock %} {% block pagecontent %}
 
-<div class="mx-auto my-auto sm:flex gap-2">
-    <div class="size-16 pl-2 sm:pl-0">{% include "gractwo.svg" %}</div>
-    <div class="px-2">
-        <h1 class="font-bold text-2xl">Błąd 404</h1>
-        <p>
-            Nie ma strony o podanym adresie.
-            <a class="text-gractwo-blu-dark hover:underline" href="/">Wróć.</a>
-        </p>
+<div class="w-full h-full flex-1 flex justify-center items-center relative">
+    <div class="dashed-bottom-fade-grid w-full h-full z-10"></div>
+    <div class="sm:flex gap-2 z-20">
+        <div class="[&>svg]:size-16 pl-2 sm:pl-0">
+            {% include "gractwo.svg" %}
+        </div>
+        <div class="px-2">
+            <h1 class="font-bold text-2xl">Błąd 404</h1>
+            <p>
+                Nie ma strony o podanym adresie.
+                <a class="text-gractwo-blu-dark hover:underline" href="/"
+                    >Wróć.</a
+                >
+            </p>
+        </div>
     </div>
 </div>
 
