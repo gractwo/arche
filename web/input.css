@@ -8,3 +8,12 @@
     --color-gractwo-blu-semidark: #47b2ad;
     --color-gractwo-blu-dark: #3d9994;
 }
+
+.bg-gractwo-index-light {
+    background-size: "100% 100%";
+    background-image: radial-gradient(
+        125% 125% at 50% 90%,
+        #ffffff 40%,
+        #ff637e 120%
+    );
+}
