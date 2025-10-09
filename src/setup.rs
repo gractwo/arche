@@ -1,6 +1,6 @@
 use dotenvy::Error;
-use tracing::{Level, error, info, subscriber, warn};
-use tracing_subscriber::FmtSubscriber;
+use tracing::{error, info, subscriber, warn};
+use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
 pub fn dotenv_and_tracing() {
     let dotenv = match dotenvy::dotenv() {
@@ -10,16 +10,18 @@ pub fn dotenv_and_tracing() {
             false => DotenvStatus::Error(e),
         },
     };
-    let lvl = match std::env::var("RUST_LOG") {
-        Ok(s) => Level::try_from_str(&s),
+    let filter = match std::env::var("RUST_LOG") {
+        Ok(s) => EnvFilter::new(s),
         Err(e) => match e {
-            std::env::VarError::NotPresent => Level::INFO,
+            std::env::VarError::NotPresent => EnvFilter::new("info,serenity=warn"),
             std::env::VarError::NotUnicode(s) => panic!("{:?} is not a valid log level.", s),
         },
     };
-    let s = FmtSubscriber::builder().with_max_level(lvl).finish();
+    let s = FmtSubscriber::builder()
+        .with_env_filter(filter.clone())
+        .finish();
     subscriber::set_global_default(s).expect(SETGLOBAL_FAIL);
-    info!("tracing initialised ({}).", lvl);
+    info!("tracing initialised.");
     match dotenv {
         DotenvStatus::LoadedFine => info!(".env loaded successfully."),
         DotenvStatus::NotFound => warn!(".env not found; skipping..."),
@@ -32,20 +34,4 @@ enum DotenvStatus {
     LoadedFine,
     NotFound,
     Error(Error),
-}
-
-trait StrToLevel {
-    fn try_from_str(value: &str) -> Level;
-}
-impl StrToLevel for Level {
-    fn try_from_str(value: &str) -> Level {
-        match value.to_lowercase().as_str() {
-            "error" => Level::ERROR,
-            "warn" => Level::WARN,
-            "info" => Level::INFO,
-            "debug" => Level::DEBUG,
-            "trace" => Level::TRACE,
-            _ => panic!("{value} is not a valid log level."),
-        }
-    }
 }
