@@ -1,10 +1,13 @@
 use std::error::Error;
 use tokio::net::TcpListener;
 
+mod days;
 mod discordbot;
 mod router;
 mod setup;
 mod website;
+
+const SHRUG: &'static str = "¯\\_(ツ)_/¯";
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {

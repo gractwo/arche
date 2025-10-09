@@ -12,8 +12,7 @@ pub fn init_service(ctx: &Context, guild_id: &GuildId) {
     info!("Initialising discord member count service...");
 
     if guild_id != MAIN_GUILD_ID {
-        info!("Guild member count service not initialised; Bot not running on main guild.");
-        return;
+        info!("Guild member count service initialised, but bot not running on main guild.");
     }
 
     tokio::spawn(async move {

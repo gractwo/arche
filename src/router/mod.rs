@@ -1,8 +1,9 @@
 use axum::{Router, http::StatusCode, routing::get};
-use chrono::{NaiveDate, Utc};
 use tower::service_fn;
 
-use crate::{router::redirects::redirects, website::website_service};
+use crate::{
+    days::days_of_community_existence, router::redirects::redirects, website::website_service,
+};
 
 mod redirects;
 
@@ -28,7 +29,7 @@ async fn api_fallback() -> (StatusCode, String) {
 
 async fn get_member_count() -> (StatusCode, String) {
     match crate::discordbot::get_member_count().await {
-        Some(count) => (StatusCode::OK, format!("{count}")),
+        Some(count) => (StatusCode::OK, count.to_string()),
         None => (
             StatusCode::INTERNAL_SERVER_ERROR,
             format!("An error occured - could not fetch discord member count."),
@@ -37,9 +38,5 @@ async fn get_member_count() -> (StatusCode, String) {
 }
 
 async fn get_days_since_community_formation() -> String {
-    let formation = NaiveDate::from_ymd_opt(2020, 6, 7).unwrap();
-    let today = Utc::now().date_naive();
-    let days = today.signed_duration_since(formation).num_days();
-
-    days.to_string()
+    days_of_community_existence().to_string()
 }
