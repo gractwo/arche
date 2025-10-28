@@ -13,9 +13,82 @@
             </div>
             <p class="text-neutral-500 dark:text-neutral-400 text-sm">
                 Poznańskie stowarzyszenie okołogrowe, anime-informatyzacyjno
-                konwentowo-hangoutowe.
+                konwentowo-hangoutowe. <br />
+                <button
+                    id="motyw"
+                    onclick="themechanger()"
+                    class="cursor-pointer text-neutral-400 dark:text-neutral-500 hover:underline"
+                >
+                    Zmień motyw.
+                </button>
             </p>
         </section>
+        <script>
+            const themetextsetter = () => {
+                const sysconf = window.matchMedia(
+                    "(prefers-color-scheme: dark)",
+                ).matches
+                    ? "dark"
+                    : "light";
+                const currentconf =
+                    window.localStorage.getItem("gractwopl-theme");
+
+                const setLight = "Jasny motyw.";
+                const setDark = "Ciemny motyw.";
+                const setSystem = "Automatyczny motyw.";
+
+                if (sysconf === "dark" && currentconf === "system") {
+                    document.querySelector("#motyw").innerText = setLight;
+                }
+                if (sysconf === "dark" && currentconf === "light") {
+                    document.querySelector("#motyw").innerText = setDark;
+                }
+                if (sysconf === "dark" && currentconf === "dark") {
+                    document.querySelector("#motyw").innerText = setSystem;
+                }
+
+                if (sysconf === "light" && currentconf === "system") {
+                    document.querySelector("#motyw").innerText = setDark;
+                }
+                if (sysconf === "light" && currentconf === "dark") {
+                    document.querySelector("#motyw").innerText = setLight;
+                }
+                if (sysconf === "light" && currentconf === "light") {
+                    document.querySelector("#motyw").innerText = setSystem;
+                }
+            };
+            themetextsetter();
+            const themechanger = () => {
+                const sysconf = window.matchMedia(
+                    "(prefers-color-scheme: dark)",
+                ).matches
+                    ? "dark"
+                    : "light";
+                const currentconf =
+                    window.localStorage.getItem("gractwopl-theme");
+                if (sysconf === "dark" && currentconf === "system") {
+                    window.localStorage.setItem("gractwopl-theme", "light");
+                }
+                if (sysconf === "dark" && currentconf === "light") {
+                    window.localStorage.setItem("gractwopl-theme", "dark");
+                }
+                if (sysconf === "dark" && currentconf === "dark") {
+                    window.localStorage.setItem("gractwopl-theme", "system");
+                }
+
+                if (sysconf === "light" && currentconf === "system") {
+                    window.localStorage.setItem("gractwopl-theme", "dark");
+                }
+                if (sysconf === "light" && currentconf === "dark") {
+                    window.localStorage.setItem("gractwopl-theme", "light");
+                }
+                if (sysconf === "light" && currentconf === "light") {
+                    window.localStorage.setItem("gractwopl-theme", "system");
+                }
+                themetextsetter();
+                location.reload();
+            };
+        </script>
         <section class="max-w-sm w-full">
             <h1
                 class="font-medium text-lg text-neutral-500 dark:text-neutral-400 pb-4"

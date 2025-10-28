@@ -10,6 +10,23 @@
             sizes="64x64"
             href="/favicon-x64.png"
         />
+
+        <script>
+            const themes = ["system", "dark", "light"];
+            let theme = window.localStorage.getItem("gractwopl-theme");
+            if (!themes.includes(theme)) {
+                window.localStorage.setItem("gractwopl-theme", "system");
+            }
+            theme = window.localStorage.getItem("gractwopl-theme");
+            if (theme === "system") {
+                if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                    document.documentElement.classList.add("dark");
+                }
+            }
+            if (themes.includes(theme)) {
+                document.documentElement.classList.add(theme);
+            }
+        </script>
         <link href="/styles.css" rel="stylesheet" />
         <title>{% block title %}{{ title }}{% endblock %}</title>
         {% block head %} {% endblock %}

@@ -9,6 +9,8 @@
     --color-gractwo-blu-dark: #3e8f9b;
 }
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer components {
     .bg-gractwo-index {
         background-size: "100% 100%";
