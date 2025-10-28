@@ -14,7 +14,9 @@
         <title>{% block title %}{{ title }}{% endblock %}</title>
         {% block head %} {% endblock %}
     </head>
-    <body class="min-h-screen flex flex-col">
+    <body
+        class="min-h-screen flex flex-col bg-white text-black dark:bg-neutral-900 dark:text-neutral-100"
+    >
         {% block pagecontent %} {{ pagecontent }} {% endblock %}
     </body>
 </html>

@@ -2,16 +2,20 @@
 {% block title %}gractwo.pl | Błąd 404{% endblock %} {% block pagecontent %}
 
 <div class="w-full h-full flex-1 flex justify-center items-center relative">
-    <div class="dashed-bottom-fade-grid w-full h-full z-10"></div>
+    <div
+        class="dashed-bottom-fade-grid w-full h-full z-10 dark:opacity-50"
+    ></div>
     <div class="sm:flex gap-2 z-20">
         <div class="[&>svg]:size-16 pl-2 sm:pl-0">
             {% include "gractwo.svg" %}
         </div>
         <div class="px-2">
-            <h1 class="font-bold text-2xl">Błąd 404</h1>
-            <p>
+            <h1 class="font-bold text-2xl dark:text-neutral-100">Błąd 404</h1>
+            <p class="dark:text-neutral-400">
                 Nie ma strony o podanym adresie.
-                <a class="text-gractwo-blu-dark hover:underline" href="/"
+                <a
+                    class="text-gractwo-blu-dark hover:underline dark:text-gractwo-blu"
+                    href="/"
                     >Wróć.</a
                 >
             </p>
