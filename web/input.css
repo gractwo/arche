@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-    --color-gractwo-red: #fb636b;
-    --color-gractwo-red-semidark: #cc4f55;
-    --color-gractwo-red-dark: #b2454b;
-    --color-gractwo-blu: #61f2ea;
-    --color-gractwo-blu-semidark: #47b2ad;
-    --color-gractwo-blu-dark: #3d9994;
+    --color-gractwo-red: #ff637e;
+    --color-gractwo-red-semidark: #cc5166;
+    --color-gractwo-red-dark: #ad4153;
+    --color-gractwo-blu: #00d3f2;
+    --color-gractwo-blu-semidark: #41aaba;
+    --color-gractwo-blu-dark: #3e8f9b;
 }
 
 .bg-gractwo-index-light {
