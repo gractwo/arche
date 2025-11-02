@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -7,6 +8,8 @@
     --color-gractwo-blu: #00d3f2;
     --color-gractwo-blu-semidark: #41aaba;
     --color-gractwo-blu-dark: #3e8f9b;
+
+    --font-lexend: "Lexend", sans-serif;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
