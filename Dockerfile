@@ -54,17 +54,20 @@ RUN adduser \
     --no-create-home \
     --uid "${UID}" \
     appuser
+
+RUN mkdir -p /app && chown appuser:appuser /app
 USER appuser
+WORKDIR /app
 
 ENV DISCORD_BOT_TOKEN=""
 ENV DISCORD_SERVER_ID=""
 
 # Copy the executable from the "build" stage.
-COPY --from=build /bin/server /bin/
-COPY ./assets /bin/
+COPY --from=build /bin/server /app/server
+COPY ./assets /app/assets
 
 # Expose the port that the application listens on.
 EXPOSE 2020
 
 # What the container should run when it is started.
-CMD ["/bin/server"]
+CMD ["/app/server"]
