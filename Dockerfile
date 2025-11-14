@@ -61,6 +61,7 @@ ENV DISCORD_SERVER_ID=""
 
 # Copy the executable from the "build" stage.
 COPY --from=build /bin/server /bin/
+COPY ./assets /bin/
 
 # Expose the port that the application listens on.
 EXPOSE 2020
