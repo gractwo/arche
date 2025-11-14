@@ -1,0 +1,10 @@
+services:
+  server:
+    build:
+      context: .
+      target: final
+    ports:
+      - 2020:2020
+    environment:
+      - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
+      - DISCORD_SERVER_ID=${DISCORD_SERVER_ID}
