@@ -7,6 +7,7 @@ ARG APP_NAME=arche
 FROM rust:${RUST_VERSION}-alpine AS build
 ARG APP_NAME
 WORKDIR /app
+ENV IN_DOCKER=true
 
 # Install host build dependencies.
 RUN apk add --no-cache clang lld musl-dev git
@@ -58,6 +59,7 @@ RUN adduser \
 RUN mkdir -p /app && chown appuser:appuser /app
 USER appuser
 WORKDIR /app
+ENV IN_DOCKER=true
 
 ENV DISCORD_BOT_TOKEN=""
 ENV DISCORD_SERVER_ID=""
