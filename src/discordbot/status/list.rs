@@ -4,23 +4,23 @@ use std::sync::LazyLock;
 pub static LIST: LazyLock<Vec<ActivityData>> = LazyLock::new(|| {
     use ActivityData as ACT;
     vec![
-        ACT::playing("Team Fortress 2"),
-        ACT::playing("Minecraft"),
-        ACT::playing("PGTF Dating Sim"),
-        ACT::playing("Hades"),
-        ACT::playing("Bloons TD 6"),
+        ACT::custom("Playing Team Fortress 2"),
+        ACT::custom("Playing Minecraft"),
+        ACT::custom("Playing PGTF Dating Sim"),
+        ACT::custom("Playing Hades"),
+        ACT::custom("Playing Bloons TD 6"),
         // // // // // // // // // // //
-        ACT::listening("Lin-Manuel Miranda"),
-        ACT::listening("Kendrick Lamar"),
-        ACT::listening("Pięć Dwa Dębiec"),
-        ACT::listening("Gimpson"),
+        ACT::custom("Listening to Lin-Manuel Miranda"),
+        ACT::custom("Listening to Kendrick Lamar"),
+        ACT::custom("Listening to Pięć Dwa Dębiec"),
+        ACT::custom("Listening to Gimpson"),
         // // // // // // // // // // //
-        ACT::watching("Scooby Doo"),
-        ACT::watching("Horimiya"),
-        ACT::watching("My Deer Friend Nokotan"),
-        ACT::watching("Lycoris Recoil"),
-        ACT::watching("Yuru Camp"),
-        ACT::watching("DARLING in the FRANXX"),
+        ACT::custom("Watching Scooby Doo"),
+        ACT::custom("Watching Horimiya"),
+        ACT::custom("Watching My Deer Friend Nokotan"),
+        ACT::custom("Watching Lycoris Recoil"),
+        ACT::custom("Watching Yuru Camp"),
+        ACT::custom("Watching DARLING in the FRANXX"),
         // // // // // // // // // // //
         ACT::custom("Formalizuje stowarzyszenie"),
         ACT::custom("Shipuje członków"),
